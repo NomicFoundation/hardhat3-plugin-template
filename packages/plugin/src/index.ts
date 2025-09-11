@@ -1,6 +1,6 @@
 import type { HardhatPlugin } from "hardhat/types/plugins";
 
-export default {
+const plugin: HardhatPlugin = {
   id: "hardhat-plugin-template",
 
   // The `npmPackage` field is only necessary if the `id` is not the npm package
@@ -11,4 +11,6 @@ export default {
   hookHandlers: {
     network: () => import("./hooks/network.js"),
   },
-} satisfies HardhatPlugin;
+};
+
+export default plugin;

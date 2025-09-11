@@ -1,0 +1,15 @@
+{
+  "name": "example-project",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc --build"
+  },
+  "devDependencies": {
+    "@tsconfig/node22": "^22.0.2",
+    "hardhat": "^3.0.6",
+    "hardhat-plugin-template": "workspace:*",
+    "typescript": "~5.8.0"
+  }
+}
