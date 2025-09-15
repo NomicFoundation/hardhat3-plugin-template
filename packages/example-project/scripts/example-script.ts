@@ -7,7 +7,7 @@ const accounts = await provider.send("eth_accounts", []);
 
 console.log("Accounts:", accounts);
 
-console.log(`Sending 1wei form ${accounts[0]} to ${accounts[1]}...`);
+console.log(`Sending 1wei from ${accounts[0]} to ${accounts[1]}...`);
 
 const tx = await provider.request({
   method: "eth_sendTransaction",
