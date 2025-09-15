@@ -31,7 +31,7 @@ describe("MyPlugin tests", () => {
     });
   });
 
-  describe("Test creting a new HRE with an inline config", async () => {
+  describe("Test creating a new HRE with an inline config", async () => {
     it("Should be able to load the plugin", async () => {
       // You can also create a new HRE without a fixture project, including
       // a custom config.
