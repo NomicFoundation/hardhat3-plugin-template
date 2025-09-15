@@ -32,6 +32,8 @@ which should print `Hola, Hardhat!`.
 
 ## Understanding the repository structure
 
+### Monorepo structure
+
 This repository is structured as a pnpm monorepo with the following packages:
 
 - `packages/plugin`: The plugin itself.
@@ -39,7 +41,7 @@ This repository is structured as a pnpm monorepo with the following packages:
 
 All the development will happen in the `packages/plugin` directory, while `packages/example-project` is a playground to experiment with your plugin, and manually test it.
 
-## Github Actions setup
+### Github Actions setup
 
 This repository is setup with a Github Actions workflow. You don't need to do anything to set it up, it runs your on every push to `main`, on pull requests, and when manual triggered.
 
