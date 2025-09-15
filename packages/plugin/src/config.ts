@@ -2,6 +2,8 @@ import { HardhatUserConfig } from "hardhat/config";
 import { HardhatConfig } from "hardhat/types/config";
 import { HardhatUserConfigValidationError } from "hardhat/types/hooks";
 
+const DEFAULT_MY_ACCOUNT_INDEX = 0;
+
 /**
  * This function validates the parts of the HardhatUserConfig that are relevant
  * to the plugin.
@@ -14,34 +16,35 @@ import { HardhatUserConfigValidationError } from "hardhat/types/hooks";
 export async function validatePluginConfig(
   userConfig: HardhatUserConfig,
 ): Promise<HardhatUserConfigValidationError[]> {
-  if (userConfig.myConfig === undefined) {
+  if (
+    userConfig.networks === undefined ||
+    typeof userConfig.networks !== "object"
+  ) {
+    // If there's no networks field or it's invalid, we don't validate anything
+    // in this plugin
     return [];
   }
 
-  if (typeof userConfig.myConfig !== "object") {
-    return [
-      {
-        path: ["myConfig"],
-        message: "Expected an object with an optional greeting.",
-      },
-    ];
+  const errors = [];
+  for (const [networkName, networkConfig] of Object.entries(
+    userConfig.networks,
+  )) {
+    if (networkConfig.myAccountIndex === undefined) {
+      continue;
+    }
+
+    if (
+      typeof networkConfig.myAccountIndex !== "number" ||
+      networkConfig.myAccountIndex < 0
+    ) {
+      errors.push({
+        path: ["networks", networkName, "myAccountIndex"],
+        message: "Expected a non-negative number.",
+      });
+    }
   }
 
-  const greeting = userConfig.myConfig?.greeting;
-  if (greeting === undefined) {
-    return [];
-  }
-
-  if (typeof greeting !== "string" || greeting.length === 0) {
-    return [
-      {
-        path: ["myConfig", "greeting"],
-        message: "Expected a non-empty string.",
-      },
-    ];
-  }
-
-  return [];
+  return errors;
 }
 
 /**
@@ -59,11 +62,23 @@ export async function resolvePluginConfig(
   userConfig: HardhatUserConfig,
   partiallyResolvedConfig: HardhatConfig,
 ): Promise<HardhatConfig> {
-  const greeting = userConfig.myConfig?.greeting ?? "Hello";
-  const myConfig = { greeting };
+  const networks: HardhatConfig["networks"] = {};
+
+  for (const [networkName, networkConfig] of Object.entries(
+    partiallyResolvedConfig.networks,
+  )) {
+    const myAccountIndex =
+      userConfig.networks?.[networkName]?.myAccountIndex ??
+      DEFAULT_MY_ACCOUNT_INDEX;
+
+    networks[networkName] = {
+      ...networkConfig,
+      myAccountIndex,
+    };
+  }
 
   return {
     ...partiallyResolvedConfig,
-    myConfig,
+    networks,
   };
 }
