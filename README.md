@@ -4,7 +4,7 @@ This repository is a template for creating a Hardhat 3 plugin.
 
 ## Getting started
 
-> This repository is structured as a pnpm monorepo, so make sure you have pnpm installed first
+> This repository is structured as a pnpm monorepo, so make sure you have [`pnpm`](https://pnpm.io/) installed first
 
 To get started, clone the respository and run:
 
