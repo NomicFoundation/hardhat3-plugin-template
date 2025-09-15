@@ -1,26 +1,55 @@
-# My Hardhat 3 plugin
+# `hardhat-plugin-template`
 
-This is an example project that uses your plugin.
+This is an example plugin that adds a task that prints a greeting.
 
-## Getting started
+## Installation
 
-To run this project, you need to install the dependencies and build the plugin:
+To install this plugin, run the following command:
 
-```sh
-pnpm install
-pnpm build
+```bash
+npm install --save-dev hardhat-plugin-template
 ```
 
-Then, you can run hardhat with:
+In your `hardhat.config.ts` file, import the plugin and add it to the `plugins` array:
 
-```sh
-pnpm hardhat my-task
+```ts
+import hardhatPluginTemplate from "hardhat-plugin-template";
+
+export default {
+  plugins: [hardhatPluginTemplate],
+};
 ```
 
-## What's inside the project?
+## Usage
 
-This project is similar to what you get when initializing a Hardhat 3 project with `npx hardhat --init`, but without any of the Hardhat toolboxes.
+The plugin adds a new task called `my-task`. To run it, use the following command:
 
-This means that you don't have `ethers,` `viem`, `mocha`, nor the Node.js test runner plugins.
+```bash
+npx hardhat my-task
+```
 
-Please install whichever dependency or plugin you need in here. This package won't be published, so you have complete freedom to do whatever you want.
+You should see the following output:
+
+```
+Hello, Hardhat!
+```
+
+### Configuration
+
+You can configure the greeting that's printed by using the `myConfig` field in your Hardhat config. For example, you can have the following configuration:
+
+```ts
+import hardhatPluginTemplate from "hardhat-plugin-template";
+
+export default {
+  plugins: [hardhatPluginTemplate],
+  myConfig: {
+    greeting: "Hola",
+  },
+  //...
+};
+```
+
+### Network logs
+
+This plugin also adds some example code to log different network events. To see it in action, all you need to do is run your Hardhat tests, deployment, or a script.
