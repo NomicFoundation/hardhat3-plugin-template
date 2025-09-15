@@ -6,11 +6,30 @@ settings:
 
 importers:
 
-  .:
-    dependencies:
+  .: {}
+
+  packages/example-project:
+    devDependencies:
+      '@tsconfig/node22':
+        specifier: ^22.0.2
+        version: 22.0.2
+      '@types/node':
+        specifier: ^22.11.0
+        version: 22.18.4
+      forge-std:
+        specifier: github:foundry-rs/forge-std#v1.9.4
+        version: https://codeload.github.com/foundry-rs/forge-std/tar.gz/1eea5bae12ae557d589f9f0f0edae2faa47cb262
       hardhat:
         specifier: ^3.0.6
         version: 3.0.6
+      hardhat-plugin-template:
+        specifier: workspace:*
+        version: link:../plugin
+      typescript:
+        specifier: ~5.8.0
+        version: 5.8.3
+
+  packages/plugin:
     devDependencies:
       '@eslint/js':
         specifier: ^9.35.0
@@ -22,8 +41,8 @@ importers:
         specifier: ^22.0.2
         version: 22.0.2
       '@types/node':
-        specifier: ^20.14.9
-        version: 20.19.13
+        specifier: ^22.11.0
+        version: 22.18.4
       c8:
         specifier: ^9.1.0
         version: 9.1.0
@@ -36,9 +55,9 @@ importers:
       eslint-plugin-import:
         specifier: ^2.32.0
         version: 2.32.0(@typescript-eslint/parser@8.43.0(eslint@9.35.0)(typescript@5.8.3))(eslint-import-resolver-typescript@4.4.4)(eslint@9.35.0)
-      expect-type:
-        specifier: ^1.2.1
-        version: 1.2.2
+      hardhat:
+        specifier: ^3.0.6
+        version: 3.0.6
       prettier:
         specifier: 3.2.5
         version: 3.2.5
@@ -54,6 +73,8 @@ importers:
       typescript-eslint:
         specifier: ^8.43.0
         version: 8.43.0(eslint@9.35.0)(typescript@5.8.3)
+
+  packages/plugin/test/fixture-projects/base-project: {}
 
 packages:
 
@@ -314,8 +335,8 @@ packages:
   '@jridgewell/sourcemap-codec@1.5.5':
     resolution: {integrity: sha512-cYQ9310grqxueWbl+WuIUIaiUaDcj7WOq5fVhEljNVgRfOUhY9fy2zTvfoqWsnebh8Sl70VScFbICvJnLKB0Og==}
 
-  '@jridgewell/trace-mapping@0.3.30':
-    resolution: {integrity: sha512-GQ7Nw5G2lTu/BtHTKfXhKHok2WGetd4XYcVKGx00SjAk8GMwgJM3zr6zORiPGuOE+/vkc90KtTosSSvaCjKb2Q==}
+  '@jridgewell/trace-mapping@0.3.31':
+    resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
   '@napi-rs/wasm-runtime@0.2.12':
     resolution: {integrity: sha512-ZVWUcfwY4E/yPitQJl481FjFo3K22D6qF0DuFH6Y/nbnE11GY5uguDxZMGXPQ8WQ0128MXQD7TnfHyK4oWoIJQ==}
@@ -475,8 +496,8 @@ packages:
   '@types/json5@0.0.29':
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
 
-  '@types/node@20.19.13':
-    resolution: {integrity: sha512-yCAeZl7a0DxgNVteXFHt9+uyFbqXGy/ShC4BlcHkoE0AfGXYv/BUiplV72DjMYXHDBXFjhvr6DD1NiRVfB4j8g==}
+  '@types/node@22.18.4':
+    resolution: {integrity: sha512-UJdblFqXymSBhmZf96BnbisoFIr8ooiiBRMolQgg77Ea+VM37jXw76C2LQr9n8wm9+i/OvlUlW6xSvqwzwqznw==}
 
   '@typescript-eslint/eslint-plugin@8.43.0':
     resolution: {integrity: sha512-8tg+gt7ENL7KewsKMKDHXR1vm8tt9eMxjJBYINf6swonlWgkYn5NwyIgXpbbDxTNU5DgpDFfj95prcTq2clIQQ==}
@@ -982,10 +1003,6 @@ packages:
   ethereum-cryptography@2.2.1:
     resolution: {integrity: sha512-r/W8lkHSiTLxUxW8Rf3u4HGB0xQweG2RyETjywylKZSzLWoWAijRz8WCuOtJ6wah+avllXBqZuk29HCCvhEIRg==}
 
-  expect-type@1.2.2:
-    resolution: {integrity: sha512-JhFGDVJ7tmDJItKhYgJCGLOWjuK9vPxiXoUFLwLDc99NlmklilbiQJwoctZtt13+xMw91MCk/REan6MWHqDjyA==}
-    engines: {node: '>=12.0.0'}
-
   fast-deep-equal@3.1.3:
     resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
 
@@ -1041,6 +1058,10 @@ packages:
   foreground-child@3.3.1:
     resolution: {integrity: sha512-gIXjKqtFuWEgzFRJA9WCQeSJLZDjgJUOMCMzxtvFq/37KojM1BFGufqsCy0r4qSQmYLsZYMeyRqzIWOMup03sw==}
     engines: {node: '>=14'}
+
+  forge-std@https://codeload.github.com/foundry-rs/forge-std/tar.gz/1eea5bae12ae557d589f9f0f0edae2faa47cb262:
+    resolution: {tarball: https://codeload.github.com/foundry-rs/forge-std/tar.gz/1eea5bae12ae557d589f9f0f0edae2faa47cb262}
+    version: 1.9.4
 
   fs.realpath@1.0.0:
     resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
@@ -2002,7 +2023,7 @@ snapshots:
 
   '@jridgewell/sourcemap-codec@1.5.5': {}
 
-  '@jridgewell/trace-mapping@0.3.30':
+  '@jridgewell/trace-mapping@0.3.31':
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
@@ -2178,7 +2199,7 @@ snapshots:
 
   '@types/json5@0.0.29': {}
 
-  '@types/node@20.19.13':
+  '@types/node@22.18.4':
     dependencies:
       undici-types: 6.21.0
 
@@ -2822,8 +2843,6 @@ snapshots:
       '@scure/bip32': 1.4.0
       '@scure/bip39': 1.3.0
 
-  expect-type@1.2.2: {}
-
   fast-deep-equal@3.1.3: {}
 
   fast-equals@5.2.2: {}
@@ -2876,6 +2895,8 @@ snapshots:
     dependencies:
       cross-spawn: 7.0.6
       signal-exit: 4.1.0
+
+  forge-std@https://codeload.github.com/foundry-rs/forge-std/tar.gz/1eea5bae12ae557d589f9f0f0edae2faa47cb262: {}
 
   fs.realpath@1.0.0: {}
 
@@ -3677,7 +3698,7 @@ snapshots:
 
   v8-to-istanbul@9.3.0:
     dependencies:
-      '@jridgewell/trace-mapping': 0.3.30
+      '@jridgewell/trace-mapping': 0.3.31
       '@types/istanbul-lib-coverage': 2.0.6
       convert-source-map: 2.0.0
 
