@@ -27,7 +27,8 @@
     "pretest:only": "pnpm build",
     "build": "tsc --build .",
     "prepublishOnly": "pnpm build",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "watch": "tsc --build . --watch"
   },
   "files": [
     "dist/src/",

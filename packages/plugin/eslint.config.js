@@ -30,6 +30,14 @@ export default defineConfig(
   eslint.configs.recommended,
   tseslint.configs.recommendedTypeChecked,
   {
+    files: ["src/**/*.ts", "test/**/*.ts", "integration-tests/**/*.ts"],
+    rules: {
+      // Disable two rules that conflict with the patterns that we use
+      "@typescript-eslint/require-await": "off",
+      "@typescript-eslint/no-redundant-type-constituents": "off",
+    },
+  },
+  {
     files: ["src/**/*.ts"],
     rules: {
       "import/no-extraneous-dependencies": [
