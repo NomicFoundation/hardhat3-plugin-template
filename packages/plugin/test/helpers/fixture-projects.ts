@@ -10,7 +10,7 @@ import { HardhatRuntimeEnvironment } from "hardhat/types/hre";
 /**
  * Creates a new Hardhat Runtime Environment based on a fixture project.
  *
- * A fixture project is a Hardhat project located in `../fixtures-projects` that
+ * A fixture project is a Hardhat project located in `../fixture-projects` that
  * has its own hardhat.config.ts and package.json (not part of the monorepo).
  *
  * Note: This function doesn't modify the global environment, the global
