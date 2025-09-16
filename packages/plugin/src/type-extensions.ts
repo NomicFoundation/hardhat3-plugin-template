@@ -1,12 +1,15 @@
-import { MyPluginConfig, MyPluginUserConfig } from "./types.js";
+import { MyPluginEthersExtensions, MyPluginViemExtensions } from "./types.js";
 
-import "hardhat/types/config";
-declare module "hardhat/types/config" {
-  interface HardhatUserConfig {
-    myConfig?: MyPluginUserConfig;
+import "@nomicfoundation/hardhat-ethers/types";
+declare module "@nomicfoundation/hardhat-ethers/types" {
+  interface HardhatEthersHelpers {
+    myPlugin: MyPluginEthersExtensions;
   }
+}
 
-  interface HardhatConfig {
-    myConfig: MyPluginConfig;
+import "@nomicfoundation/hardhat-viem/types";
+declare module "@nomicfoundation/hardhat-viem/types" {
+  interface HardhatViemHelpers {
+    myPlugin: MyPluginViemExtensions;
   }
 }

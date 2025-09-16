@@ -1,17 +1,23 @@
 import { network } from "hardhat";
 
-console.log("Running example script");
-const { provider } = await network.connect();
+const conn = await network.connect();
 
-const accounts = await provider.send("eth_accounts", []);
+// This won't type unless you have the viem plugin in your config
+console.log("conn?.viem?.myPlugin", conn?.viem?.myPlugin);
+if (conn?.viem?.myPlugin) {
+  console.log(
+    "conn.viem.myPlugin.getAccounts()",
+    await conn.viem.myPlugin.getAccounts()
+  );
+}
 
-console.log("Accounts:", accounts);
+// This won't type unless you have the ethers plugin in your config
+console.log("conn?.ethers?.myPlugin", conn?.ethers?.myPlugin);
+if (conn?.ethers?.myPlugin) {
+  console.log(
+    "conn.ethers.myPlugin.getAccounts()",
+    await conn.ethers.myPlugin.getAccounts()
+  );
+}
 
-console.log(`Sending 1wei from ${accounts[0]} to ${accounts[1]}...`);
-
-const tx = await provider.request({
-  method: "eth_sendTransaction",
-  params: [{ from: accounts[0], to: accounts[1], value: "0x1" }],
-});
-
-console.log(`Successfully sent transaction with hash ${tx}`);
+// Note that the plugin should support both ethers and viem, and none.

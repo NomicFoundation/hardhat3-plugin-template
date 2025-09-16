@@ -8,11 +8,15 @@
     "watch": "tsc --build . --watch"
   },
   "devDependencies": {
+    "@nomicfoundation/hardhat-ethers": "^4.0.1",
+    "@nomicfoundation/hardhat-viem": "^3.0.0",
     "@tsconfig/node22": "^22.0.2",
     "@types/node": "^22.11.0",
+    "ethers": "^6.15.0",
+    "forge-std": "github:foundry-rs/forge-std#v1.9.4",
     "hardhat": "^3.0.6",
     "hardhat-plugin-template": "workspace:*",
     "typescript": "~5.8.0",
-    "forge-std": "github:foundry-rs/forge-std#v1.9.4"
+    "viem": "^2.37.6"
   }
 }
