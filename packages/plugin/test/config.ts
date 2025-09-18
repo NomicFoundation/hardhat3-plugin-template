@@ -3,7 +3,6 @@ import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import { HardhatConfig, HardhatUserConfig } from "hardhat/types/config";
 import { resolvePluginConfig, validatePluginConfig } from "../src/config.js";
-import { MyPluginUserConfig } from "../src/types.js";
 
 describe("MyPlugin config", () => {
   describe("Config validation", () => {
@@ -51,7 +50,8 @@ describe("MyPlugin config", () => {
       // allowing something that is invalid
       it("Should reject a myConfig field with an invalid type", async () => {
         const validationErrors = await validatePluginConfig({
-          myConfig: "INVALID" as MyPluginUserConfig,
+          // @ts-expect-error We're intentionally passing a string here
+          myConfig: "INVALID",
         });
 
         assert.deepEqual(validationErrors, [
@@ -110,7 +110,7 @@ describe("MyPlugin config", () => {
 
       const resolvedConfig = await resolvePluginConfig(
         userConfig,
-        partiallyResolvedConfig,
+        partiallyResolvedConfig
       );
 
       assert.deepEqual(resolvedConfig.myConfig, { greeting: "Hello" });
@@ -122,7 +122,7 @@ describe("MyPlugin config", () => {
 
       const resolvedConfig = await resolvePluginConfig(
         userConfig,
-        partiallyResolvedConfig,
+        partiallyResolvedConfig
       );
 
       assert.deepEqual(resolvedConfig.myConfig, { greeting: "Hello" });
@@ -134,7 +134,7 @@ describe("MyPlugin config", () => {
 
       const resolvedConfig = await resolvePluginConfig(
         userConfig,
-        partiallyResolvedConfig,
+        partiallyResolvedConfig
       );
 
       assert.deepEqual(resolvedConfig.myConfig, { greeting: "Hola" });

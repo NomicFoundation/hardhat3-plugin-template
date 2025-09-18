@@ -2,10 +2,6 @@ import type { HookContext, NetworkHooks } from "hardhat/types/hooks";
 import { ChainType, NetworkConnection } from "hardhat/types/network";
 
 export default async (): Promise<Partial<NetworkHooks>> => {
-  console.log(
-    "An instance of the HRE is using the network hooks for the first time",
-  );
-
   const handlers: Partial<NetworkHooks> = {
     async newConnection<ChainTypeT extends ChainType | string>(
       context: HookContext,

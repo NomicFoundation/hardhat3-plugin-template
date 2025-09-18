@@ -22,7 +22,7 @@ export default {
 
 ## Usage
 
-The plugin adds a new task called `my-task`. To run it, use the following command:
+The plugin adds a new task called `my-task`. To run it, use the this command:
 
 ```bash
 npx hardhat my-task
@@ -36,7 +36,7 @@ Hello, Hardhat!
 
 ### Configuration
 
-You can configure the greeting that's printed by using the `myConfig` field in your Hardhat config. For example, you can have the following configuration:
+You can configure the greeting that's printed by using the `myConfig` field in your Hardhat config. For example, you can have this config:
 
 ```ts
 import myPlugin from "hardhat-my-plugin";
