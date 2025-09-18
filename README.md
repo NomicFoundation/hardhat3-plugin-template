@@ -43,7 +43,7 @@ All the development will happen in the `packages/plugin` directory, while `packa
 
 ### Github Actions setup
 
-This repository is setup with a Github Actions workflow. You don't need to do anything to set it up, it runs your on every push to `main`, on pull requests, and when manual triggered.
+This repository is setup with a Github Actions workflow. You don't need to do anything to set it up, it runs on every push to `main`, on pull requests, and when manually triggered.
 
 The workflow is equivalent to running this steps in the root of the repository:
 
