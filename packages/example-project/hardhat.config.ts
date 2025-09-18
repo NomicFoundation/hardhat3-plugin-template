@@ -1,5 +1,5 @@
 import { HardhatUserConfig } from "hardhat/config";
-import myPlugin from "hardhat-plugin-template";
+import myPlugin from "hardhat-my-plugin";
 
 export default {
   plugins: [myPlugin],

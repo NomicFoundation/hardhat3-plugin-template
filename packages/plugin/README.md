@@ -1,4 +1,4 @@
-# `hardhat-plugin-template`
+# `hardhat-my-plugin`
 
 This is an example plugin that adds a task that prints a greeting.
 
@@ -7,16 +7,16 @@ This is an example plugin that adds a task that prints a greeting.
 To install this plugin, run the following command:
 
 ```bash
-npm install --save-dev hardhat-plugin-template
+npm install --save-dev hardhat-my-plugin
 ```
 
 In your `hardhat.config.ts` file, import the plugin and add it to the `plugins` array:
 
 ```ts
-import hardhatPluginTemplate from "hardhat-plugin-template";
+import myPlugin from "hardhat-my-plugin";
 
 export default {
-  plugins: [hardhatPluginTemplate],
+  plugins: [myPlugin],
 };
 ```
 
@@ -39,10 +39,10 @@ Hello, Hardhat!
 You can configure the greeting that's printed by using the `myConfig` field in your Hardhat config. For example, you can have the following configuration:
 
 ```ts
-import hardhatPluginTemplate from "hardhat-plugin-template";
+import myPlugin from "hardhat-my-plugin";
 
 export default {
-  plugins: [hardhatPluginTemplate],
+  plugins: [myPlugin],
   myConfig: {
     greeting: "Hola",
   },

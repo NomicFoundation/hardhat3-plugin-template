@@ -1,5 +1,5 @@
 {
-  "name": "hardhat-plugin-template",
+  "name": "hardhat-my-plugin",
   "version": "1.0.0",
   "description": "Hardhat 3 plugin template",
   "license": "MIT",

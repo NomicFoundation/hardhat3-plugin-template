@@ -31,7 +31,7 @@ pnpm hardhat test
 
 ## What's inside the project?
 
-This project is similar to what you get when initializing a Hardhat 3 project with `npx hardhat --init`, but without any of the Hardhat toolboxes.
+This is a minimal Hardhat 3 project that only has the built-in functionality of Hardhat and your plugin.
 
 This means that you don't have `ethers,` `viem`, `mocha`, nor the Node.js test runner plugins.
 
