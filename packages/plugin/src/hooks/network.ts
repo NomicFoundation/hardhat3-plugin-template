@@ -1,3 +1,4 @@
+import { HardhatPluginError } from "hardhat/plugins";
 import type { HookContext, NetworkHooks } from "hardhat/types/hooks";
 import { ChainType, NetworkConnection } from "hardhat/types/network";
 
@@ -11,16 +12,23 @@ export default async (): Promise<Partial<NetworkHooks>> => {
     ): Promise<NetworkConnection<ChainTypeT>> {
       const connection = await next(context);
 
-      console.log("Connection created with ID", connection.id);
+      // Get the accounts from the connection
+      const accounts: string[] = await connection.provider.request({
+        method: "eth_accounts",
+      });
+
+      const myAccountIndex = connection.networkConfig.myAccountIndex;
+
+      if (accounts.length <= myAccountIndex) {
+        throw new HardhatPluginError(
+          `hardhat-plugin-template`,
+          `Invalid index ${myAccountIndex} for myAccount when connecting to network ${connection.networkName}`,
+        );
+      }
+
+      connection.myAccount = accounts[myAccountIndex];
 
       return connection;
-    },
-    async onRequest(context, networkConnection, jsonRpcRequest, next) {
-      console.log(
-        `Request from connection ${networkConnection.id} is being processed — Method: ${jsonRpcRequest.method}`,
-      );
-
-      return next(context, networkConnection, jsonRpcRequest);
     },
   };
 
