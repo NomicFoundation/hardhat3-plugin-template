@@ -110,7 +110,7 @@ describe("MyPlugin config", () => {
 
       const resolvedConfig = await resolvePluginConfig(
         userConfig,
-        partiallyResolvedConfig
+        partiallyResolvedConfig,
       );
 
       assert.deepEqual(resolvedConfig.myConfig, { greeting: "Hello" });
@@ -122,7 +122,7 @@ describe("MyPlugin config", () => {
 
       const resolvedConfig = await resolvePluginConfig(
         userConfig,
-        partiallyResolvedConfig
+        partiallyResolvedConfig,
       );
 
       assert.deepEqual(resolvedConfig.myConfig, { greeting: "Hello" });
@@ -134,7 +134,7 @@ describe("MyPlugin config", () => {
 
       const resolvedConfig = await resolvePluginConfig(
         userConfig,
-        partiallyResolvedConfig
+        partiallyResolvedConfig,
       );
 
       assert.deepEqual(resolvedConfig.myConfig, { greeting: "Hola" });
