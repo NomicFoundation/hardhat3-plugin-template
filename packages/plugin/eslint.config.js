@@ -38,6 +38,7 @@ export default defineConfig(
       // We disable the following rule as it's a common pattern when using
       // the network provider directly
       "@typescript-eslint/no-unsafe-assignment": "off",
+      "@typescript-eslint/no-unsafe-member-access": "off",
     },
   },
   {
