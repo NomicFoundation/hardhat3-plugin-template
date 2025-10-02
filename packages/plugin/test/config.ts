@@ -13,12 +13,12 @@ describe("MyPlugin config", () => {
         assert.equal(validationErrors.length, 0);
       });
 
-      it("Should ignore errors in other parts of the config", async () => {
+      it("Should consider a newtwork without a myAccountIndex as valid", async () => {
         const validationErrors = await validatePluginConfig({
           networks: {
             foo: {
               type: "http",
-              url: "INVALID URL",
+              url: "http://localhost:8545",
             },
           },
         });
@@ -26,18 +26,27 @@ describe("MyPlugin config", () => {
         assert.equal(validationErrors.length, 0);
       });
 
-      it("Should accept an empty myConfig object", async () => {
+      it("Should accept a non-negative myAccountIndex", async () => {
         const validationErrors = await validatePluginConfig({
-          myConfig: {},
+          networks: {
+            foo: {
+              type: "edr-simulated",
+              myAccountIndex: 1,
+            },
+          },
         });
 
         assert.equal(validationErrors.length, 0);
       });
 
-      it("Should accept an non-empty greeting", async () => {
+      it("Should ignore errors in other parts of the config, including the network", async () => {
         const validationErrors = await validatePluginConfig({
-          myConfig: {
-            greeting: "Hola",
+          networks: {
+            foo: {
+              type: "http",
+              url: "INVALID",
+              myAccountIndex: 1,
+            },
           },
         });
 
@@ -46,48 +55,69 @@ describe("MyPlugin config", () => {
     });
 
     describe("Invalid cases", () => {
-      // Many invalid cases are type-unsafe, as we have to trick TypeScript into
-      // allowing something that is invalid
-      it("Should reject a myConfig field with an invalid type", async () => {
+      it("Should reject a myAccountIndex field with an invalid type", async () => {
         const validationErrors = await validatePluginConfig({
-          // @ts-expect-error We're intentionally passing a string here
-          myConfig: "INVALID",
+          networks: {
+            foo: {
+              type: "edr-simulated",
+              // @ts-expect-error We're intentionally passing a string here
+              myAccountIndex: "INVALID",
+            },
+          },
         });
 
         assert.deepEqual(validationErrors, [
           {
-            path: ["myConfig"],
-            message: "Expected an object with an optional greeting.",
+            path: ["networks", "foo", "myAccountIndex"],
+            message: "Expected a non-negative number.",
           },
         ]);
       });
 
-      it("Should reject a myConfig field with an invalid greeting", async () => {
+      it("Should reject a myAccountIndex with a negative value", async () => {
         const validationErrors = await validatePluginConfig({
-          myConfig: {
-            greeting: 123 as unknown as string,
+          networks: {
+            foo: {
+              type: "edr-simulated",
+              myAccountIndex: -1,
+            },
           },
         });
 
         assert.deepEqual(validationErrors, [
           {
-            path: ["myConfig", "greeting"],
-            message: "Expected a non-empty string.",
+            path: ["networks", "foo", "myAccountIndex"],
+            message: "Expected a non-negative number.",
           },
         ]);
       });
 
-      it("Should reject a myConfig field with an empty greeting", async () => {
+      it("Should validate all the networks", async () => {
         const validationErrors = await validatePluginConfig({
-          myConfig: {
-            greeting: "",
+          networks: {
+            foo: {
+              type: "edr-simulated",
+              myAccountIndex: -1,
+            },
+            valid: {
+              type: "edr-simulated",
+              myAccountIndex: 1,
+            },
+            bar: {
+              type: "edr-simulated",
+              myAccountIndex: -2,
+            },
           },
         });
 
         assert.deepEqual(validationErrors, [
           {
-            path: ["myConfig", "greeting"],
-            message: "Expected a non-empty string.",
+            path: ["networks", "foo", "myAccountIndex"],
+            message: "Expected a non-negative number.",
+          },
+          {
+            path: ["networks", "bar", "myAccountIndex"],
+            message: "Expected a non-negative number.",
           },
         ]);
       });
@@ -95,49 +125,90 @@ describe("MyPlugin config", () => {
   });
 
   describe("Config resolution", () => {
-    // The config resolution is always type-unsafe, as your plugin is extending
-    // the HardhatConfig type, but the partially resolved config isn't aware of
-    // your plugin's extensions. You are responsible for ensuring that they are
-    // defined correctly during the resolution process.
-    //
-    // We recommend testing using an artificial partially resolved config, as
-    // we do here, but taking care that the fields that your resolution logic
-    // depends on are defined and valid.
+    // By the time this plugin's resolution is called, Hardhat has already
+    // run the base config resolution, including of the networks. This means
+    // that the partially resolved config already has them, and all we need to
+    // do is resolve the myAccountIndex field.
 
-    it("Should resolve a config without a myConfig field", async () => {
-      const userConfig: HardhatUserConfig = {};
-      const partiallyResolvedConfig = {} as HardhatConfig;
+    // In these tests we only create the minimum partially resolved config,
+    // that's not really valid, but that has the fields our resolution needs.
+
+    it("Should resolve the default myAccountIndex of every network that's already partially resolved", async () => {
+      const userConfig: HardhatUserConfig = {
+        networks: {
+          other: {
+            type: "edr-simulated",
+          },
+        },
+      };
+
+      const partiallyResolvedConfig = {
+        networks: {
+          edr: {
+            type: "edr-simulated",
+          },
+          http: {
+            type: "http",
+            url: "http://localhost:8545",
+          },
+          other: {
+            type: "edr-simulated",
+          },
+        },
+      } as unknown as HardhatConfig;
 
       const resolvedConfig = await resolvePluginConfig(
         userConfig,
         partiallyResolvedConfig,
       );
 
-      assert.deepEqual(resolvedConfig.myConfig, { greeting: "Hello" });
+      assert.deepEqual(resolvedConfig.networks?.edr?.myAccountIndex, 0);
+      assert.deepEqual(resolvedConfig.networks?.http?.myAccountIndex, 0);
+      assert.deepEqual(resolvedConfig.networks?.other?.myAccountIndex, 0);
     });
 
-    it("Should resolve a config with an empty myConfig field", async () => {
-      const userConfig: HardhatUserConfig = { myConfig: {} };
-      const partiallyResolvedConfig = {} as HardhatConfig;
+    it("Should resolve the myAccountIndex as provided in the userConfig", async () => {
+      const userConfig: HardhatUserConfig = {
+        networks: {
+          edr: {
+            type: "edr-simulated",
+            myAccountIndex: 1,
+          },
+          http: {
+            type: "http",
+            url: "http://localhost:8545",
+            myAccountIndex: 2,
+          },
+          other: {
+            type: "edr-simulated",
+            myAccountIndex: 0,
+          },
+        },
+      };
+
+      const partiallyResolvedConfig = {
+        networks: {
+          edr: {
+            type: "edr-simulated",
+          },
+          http: {
+            type: "http",
+            url: "http://localhost:8545",
+          },
+          other: {
+            type: "edr-simulated",
+          },
+        },
+      } as unknown as HardhatConfig;
 
       const resolvedConfig = await resolvePluginConfig(
         userConfig,
         partiallyResolvedConfig,
       );
 
-      assert.deepEqual(resolvedConfig.myConfig, { greeting: "Hello" });
-    });
-
-    it("Should resolve a config using the provided greeting", async () => {
-      const userConfig: HardhatUserConfig = { myConfig: { greeting: "Hola" } };
-      const partiallyResolvedConfig = {} as HardhatConfig;
-
-      const resolvedConfig = await resolvePluginConfig(
-        userConfig,
-        partiallyResolvedConfig,
-      );
-
-      assert.deepEqual(resolvedConfig.myConfig, { greeting: "Hola" });
+      assert.deepEqual(resolvedConfig.networks?.edr?.myAccountIndex, 1);
+      assert.deepEqual(resolvedConfig.networks?.http?.myAccountIndex, 2);
+      assert.deepEqual(resolvedConfig.networks?.other?.myAccountIndex, 0);
     });
   });
 });

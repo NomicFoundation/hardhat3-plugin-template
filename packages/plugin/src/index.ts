@@ -11,14 +11,14 @@ const plugin: HardhatPlugin = {
     network: () => import("./hooks/network.js"),
   },
   tasks: [
-    task("my-task", "Prints a greeting.")
+    task("my-account", "Prints your account.")
       .addOption({
-        name: "who",
-        description: "Who is receiving the greeting.",
+        name: "title",
+        description: "The title to use before printing the account.",
         type: ArgumentType.STRING,
-        defaultValue: "Hardhat",
+        defaultValue: "My account:",
       })
-      .setAction(() => import("./tasks/my-task.js"))
+      .setAction(() => import("./tasks/my-account.js"))
       .build(),
   ],
 };
