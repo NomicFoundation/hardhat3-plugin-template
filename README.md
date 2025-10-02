@@ -43,14 +43,14 @@ All the development will happen in the `packages/plugin` directory, while `packa
 
 ### Plugin template structure
 
-The `packages/plugin` directory has a complete pluing example. It includes:
+The `packages/plugin` directory has a complete plugin example. It includes:
 
 - A `README.md` file that documents the plugin.
 - A `src/index.ts` file that defines and exports the plugin.
 - An example task, which is defined in `src/index.ts`, and whose action is in `src/tasks/my-task.ts`.
 - An example of how to extend the Hardhat config, which includes:
   - The logic to extend the validation and resolution of the Hardhat config, in `src/config.ts`.
-  - The config hook handlers to inject that logic into Hardhat, in `src/hooks/network.ts`.
+  - The config hook handlers to inject that logic into Hardhat, in `src/hooks/config.ts`.
   - The type-extensions to add your config to `HardhatUserConfig` and `HardhatConfig`, in `src/type-extensions.ts`.
 - A network hook handler, which is in `src/hooks/network.ts`, which shows how to define them, and prints a few debug messages.
 - An example of how to test the config of your plugin, in `test/config.ts`.
