@@ -6,7 +6,9 @@ export default async (): Promise<Partial<NetworkHooks>> => {
   const handlers: Partial<NetworkHooks> = {
     async newConnection<ChainTypeT extends ChainType | string>(
       context: HookContext,
-      next: (nextContext: HookContext) => Promise<NetworkConnection<ChainTypeT>>
+      next: (
+        nextContext: HookContext,
+      ) => Promise<NetworkConnection<ChainTypeT>>,
     ): Promise<NetworkConnection<ChainTypeT>> {
       const connection = await next(context);
 
@@ -20,7 +22,7 @@ export default async (): Promise<Partial<NetworkHooks>> => {
       if (accounts.length <= myAccountIndex) {
         throw new HardhatPluginError(
           `hardhat-plugin-template`,
-          `Invalid index ${myAccountIndex} for myAccount when connecting to network ${connection.networkName}`
+          `Invalid index ${myAccountIndex} for myAccount when connecting to network ${connection.networkName}`,
         );
       }
 

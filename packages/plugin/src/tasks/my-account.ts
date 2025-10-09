@@ -6,7 +6,7 @@ interface MyAccountTaskArguments {
 
 export default async function (
   taskArguments: MyAccountTaskArguments,
-  hre: HardhatRuntimeEnvironment
+  hre: HardhatRuntimeEnvironment,
 ) {
   const conn = await hre.network.connect();
   console.log(taskArguments.title);

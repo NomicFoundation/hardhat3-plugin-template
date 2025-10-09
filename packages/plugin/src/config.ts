@@ -14,7 +14,7 @@ const DEFAULT_MY_ACCOUNT_INDEX = 0;
  * @returns An array of validation errors, or an empty array if valid.
  */
 export async function validatePluginConfig(
-  userConfig: HardhatUserConfig
+  userConfig: HardhatUserConfig,
 ): Promise<HardhatUserConfigValidationError[]> {
   if (
     userConfig.networks === undefined ||
@@ -27,7 +27,7 @@ export async function validatePluginConfig(
 
   const errors = [];
   for (const [networkName, networkConfig] of Object.entries(
-    userConfig.networks
+    userConfig.networks,
   )) {
     if (networkConfig.myAccountIndex === undefined) {
       continue;
@@ -60,12 +60,12 @@ export async function validatePluginConfig(
  */
 export async function resolvePluginConfig(
   userConfig: HardhatUserConfig,
-  partiallyResolvedConfig: HardhatConfig
+  partiallyResolvedConfig: HardhatConfig,
 ): Promise<HardhatConfig> {
   const networks: HardhatConfig["networks"] = {};
 
   for (const [networkName, networkConfig] of Object.entries(
-    partiallyResolvedConfig.networks
+    partiallyResolvedConfig.networks,
   )) {
     const myAccountIndex =
       userConfig.networks?.[networkName]?.myAccountIndex ??
