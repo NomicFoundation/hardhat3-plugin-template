@@ -20,17 +20,14 @@ describe("myAccount initialization on network connection", () => {
   it("should initialize the myAccount field on the network connection", async () => {
     const hre = await createFixtureProjectHRE("base-project");
 
-    await assertMyAccount(await hre.network.connect("withMyAccountIndex"), 1);
-    await assertMyAccount(
-      await hre.network.connect("withoutMyAccountIndex"),
-      0,
-    );
+    await assertMyAccount(await hre.network.create("withMyAccountIndex"), 1);
+    await assertMyAccount(await hre.network.create("withoutMyAccountIndex"), 0);
   });
 
   it("should take into account the `accounts` field", async () => {
     const hre = await createFixtureProjectHRE("base-project");
 
-    await assertMyAccount(await hre.network.connect("withCustomAccounts"), 0);
+    await assertMyAccount(await hre.network.create("withCustomAccounts"), 0);
   });
 
   it("should throw a plugin error if the myAccountIndex is too high with respect to the accounts", async () => {
@@ -38,7 +35,7 @@ describe("myAccount initialization on network connection", () => {
 
     await assert.rejects(
       async () => {
-        await hre.network.connect("withMyAccountIndexTooHigh");
+        await hre.network.create("withMyAccountIndexTooHigh");
       },
       HardhatPluginError,
       "hardhat-plugin-template: Invalid index 100000 for myAccount when connecting to network withMyAccountIndexTooHigh",
@@ -46,7 +43,7 @@ describe("myAccount initialization on network connection", () => {
 
     await assert.rejects(
       async () => {
-        await hre.network.connect("withoutAccounts");
+        await hre.network.create("withoutAccounts");
       },
       HardhatPluginError,
       "hardhat-plugin-template: Invalid index 0 for myAccount when connecting to network withoutAccounts",
