@@ -19,10 +19,10 @@ describe("MyPlugin tests", () => {
       );
 
       // You can use any feature of Hardhat to build your tests, for example,
-      // running the task and connecting to a new edr-simulated network
+      // running the task and creating a new edr-simulated network connection
       await myTask.run();
 
-      const conn = await hre.network.connect();
+      const conn = await hre.network.create();
       assert.equal(
         await conn.provider.request({ method: "eth_blockNumber" }),
         "0x0",
