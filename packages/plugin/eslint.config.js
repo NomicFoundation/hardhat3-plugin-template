@@ -4,7 +4,6 @@ import eslint from "@eslint/js";
 import { defineConfig } from "eslint/config";
 import tseslint from "typescript-eslint";
 import * as importPlugin from "eslint-plugin-import";
-import path from "node:path";
 
 export default defineConfig(
   {
@@ -12,8 +11,7 @@ export default defineConfig(
       ecmaVersion: 2022,
       parser: tseslint.parser,
       parserOptions: {
-        project: path.join(import.meta.dirname, "tsconfig.json"),
-        tsconfigRootDir: path.join(import.meta.dirname, "tsconfig.json"),
+        tsconfigRootDir: import.meta.dirname,
         projectService: true,
       },
     },
