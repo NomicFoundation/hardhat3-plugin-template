@@ -1,7 +1,7 @@
 import { network } from "hardhat";
 
 console.log("Running example script");
-const { provider } = await network.connect();
+const { provider } = await network.create();
 
 const accounts = await provider.send("eth_accounts", []);
 
